@@ -1,0 +1,20 @@
+{
+    "name": "bluegrass/metadata",
+    "type": "library",
+    "description": "Tools for Symfony2 apps",
+    "keywords": ["framework"],    
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Germán Caseres",
+            "email": "gcaseres@gmail.com"
+        },
+        {
+            "name": "Lisandro Delía",
+            "email": "lisandro.delia@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "Bluegrass": "src/" }
+    }
+}
