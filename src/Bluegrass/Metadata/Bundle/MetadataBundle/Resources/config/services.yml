@@ -1,0 +1,7 @@
+parameters:
+    bluegrass.metadata_provider_factory.class: Bluegrass\Metadata\Bundle\MetadataBundle\Model\MetadataProvider\Factory\MetadataProviderFactory
+
+services:
+  bluegrass.metadata_provider_factory:
+        class: %bluegrass.metadata_provider_factory.class%
+        arguments: [ @doctrine.orm.entity_manager ]

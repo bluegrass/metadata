@@ -1,0 +1,3 @@
+pronit_metadata_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: BluegrassMetadataBundleMetadataBundle:Default:index }
