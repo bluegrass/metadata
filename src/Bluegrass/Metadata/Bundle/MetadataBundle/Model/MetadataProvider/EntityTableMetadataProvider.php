@@ -32,6 +32,10 @@ abstract class EntityTableMetadataProvider implements IMetadataProvider
     {
         /* @var $entityTableMetadata \Bluegrass\Metadata\Bundle\MetadataBundle\Entity\EntityTableMetadata */
         $entityTableMetadata = $this->getEm()->getRepository('\Bluegrass\Metadata\Bundle\MetadataBundle\Entity\EntityTableMetadata')->findOneByEntityType($this->getEntityType());
+        
+        if( is_null($entityTableMetadata) ){
+            throw new \Exception('No se encontró la estructura de metadatos asociada a la entidad ' . $this->getEntityType());
+        }
       
         foreach($entityTableMetadata->getAttributes() as $attributeMetadata){
 
