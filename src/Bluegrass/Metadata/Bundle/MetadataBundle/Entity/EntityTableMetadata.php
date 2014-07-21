@@ -2,6 +2,7 @@
 
 namespace Bluegrass\Metadata\Bundle\MetadataBundle\Entity;
 
+use Bluegrass\Metadata\Bundle\MetadataBundle\Model\MetadataProvider\Factory\IMetadataProviderFactory;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -29,5 +30,13 @@ class EntityTableMetadata extends TableMetadata
     {
         $this->entityType = $entityType;
     }    
+    
+    /**
+     * 
+     * {@inheritdoc }
+     */
+    public function getMetadataProviderFromFactory(IMetadataProviderFactory $providerFactory) {
+        return $providerFactory->getProviderForEntityTable($this);
+    }                
 }
 
