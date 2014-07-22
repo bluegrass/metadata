@@ -36,4 +36,14 @@ class EntityTableMetadataProvider extends MetadataProvider {
     {
         return $this->entityType;
     }
+    
+    protected function getTableMetadata() {
+        $entityTableMetadata = $this->getEm()->getRepository('\Bluegrass\Metadata\Bundle\MetadataBundle\Entity\EntityTableMetadata')->findOneByEntityType($this->getEntityType());
+
+        if (is_null($entityTableMetadata)) {
+            throw new Exception('No se encontró la estructura de metadatos asociada a la entidad ' . $this->getEntityType());
+        }
+
+        return $entityTableMetadata;
+    }    
 }
