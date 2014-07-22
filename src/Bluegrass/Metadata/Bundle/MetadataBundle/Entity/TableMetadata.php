@@ -2,9 +2,9 @@
 
 namespace Bluegrass\Metadata\Bundle\MetadataBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
+use Bluegrass\Metadata\Bundle\MetadataBundle\Model\MetadataProvider\Factory\IMetadataProviderFactory;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  *
@@ -36,7 +36,7 @@ abstract class TableMetadata
 
     /**
      * 
-     * @return \Bluegrass\Metadata\Bundle\MetadataBundle\Entity\AttributeMetadata[]
+     * @return AttributeMetadata[]
      */
     public function getAttributes()
     {
@@ -48,5 +48,7 @@ abstract class TableMetadata
         $attribute->setOwner($this);
         $this->attributes[] = $attribute;
     }
+            
+    public abstract function getMetadataProviderFromFactory(IMetadataProviderFactory $providerFactory);
 }
 

@@ -2,6 +2,7 @@
 
 namespace Bluegrass\Metadata\Bundle\MetadataBundle\Entity;
 
+use Bluegrass\Metadata\Bundle\MetadataBundle\Model\MetadataProvider\Factory\IMetadataProviderFactory;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,10 +15,8 @@ class LogicTableMetadata extends TableMetadata
     /** @ORM\Column(type="string") */    
     protected $name;
     
-    public function __construct( $name )
-    {
-        parent::__construct();
-        $this->setName($name);
+    public function __construct($name) {
+        $this->name = $name;
     }
     
     public function getName()
@@ -29,5 +28,13 @@ class LogicTableMetadata extends TableMetadata
     {
         $this->name = $name;
     }    
+    
+    /**
+     * 
+     * {@inheritdoc }
+     */
+    public function getMetadataProviderFromFactory(IMetadataProviderFactory $providerFactory) {
+        return $providerFactory->getProviderForLogicTable($this);
+    }            
 }
 
