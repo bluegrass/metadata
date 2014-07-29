@@ -17,26 +17,26 @@ interface IMetadataProviderFactory
      * Obtiene un proveedor de metadatos para una especificación de tabla con
      * atributos dinámicos.
      * 
-     * @param string|TableMetadata $tableMetadata 
+     * @param TableMetadata $tableMetadata
      * @return IMetadataProvider
      */
-    public function getProviderFor( $tableMetadata );
+    public function getMetadataProviderFor( TableMetadata $tableMetadata );
 
     /**
      * Obtiene un proveedor de metadatos a partir de una especificación de 
      * metadatos para tablas lógicas.
      * 
-     * @param LogicTableMetadata $logicTableMetadata 
+     * @param LogicTableMetadata $tableMetadata 
      * @return IMetadataProvider
      */    
-    public function getProviderForLogicTable(LogicTableMetadata $logicTableMetadata);
+    public function getProviderForLogicTable(LogicTableMetadata $tableMetadata);
 
      /**
      * Obtiene un proveedor de metadatos a partir de una especificación de 
      * metadatos para tablas basadas en entidades.
      * 
-     * @param EntityTableMetadata $entityTableMetadata 
+     * @param EntityTableMetadata $tableMetadata 
      * @return IMetadataProvider
      */    
-    public function getProviderForEntityTable(EntityTableMetadata $entityTableMetadata);
+    public function getProviderForEntityTable(EntityTableMetadata $tableMetadata);
 }

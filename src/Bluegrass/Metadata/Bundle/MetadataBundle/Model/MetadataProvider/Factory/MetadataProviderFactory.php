@@ -6,6 +6,9 @@ use Bluegrass\Metadata\Bundle\MetadataBundle\Entity\EntityTableMetadata;
 use Bluegrass\Metadata\Bundle\MetadataBundle\Entity\LogicTableMetadata;
 use Bluegrass\Metadata\Bundle\MetadataBundle\Entity\TableMetadata;
 use Bluegrass\Metadata\Bundle\MetadataBundle\Model\MetadataProvider\IMetadataProvider;
+
+use Bluegrass\Metadata\Bundle\MetadataBundle\Model\MetadataProvider\Factory\Locator\IMetadataProviderFactoryLocator;
+
 use Exception;
 
 /**
@@ -14,64 +17,38 @@ use Exception;
  *
  * @author ldelia
  */
-class MetadataProviderFactory implements IMetadataProviderFactory {
 
-    protected $metadataProviders;
-
+class MetadataProviderFactory implements IMetadataProviderFactory 
+{
+    protected $metadataProviderFactoryLocators;
+    
     /**
      * 
      * {@inheritdoc }
      */
-    public function getProviderFor($tableMetadata) {
-        if (is_string($tableMetadata)) {
-            return $this->getProviderForKey($tableMetadata);
-        } else {
-            return $this->getProviderForTableMetadata($tableMetadata);
-        }
-    }
     
+    /**
+     * Establece un Localizador de factory de proveedores de metadatos.
+     * 
+     * @param IMetadataProviderFactoryLocator $metadataProviderFactoryLocator
+     */
+    public function setMetadataProviderFactoryLocator(IMetadataProviderFactoryLocator $metadataProviderFactoryLocator) 
+    {
+        $this->metadataProviderFactoryLocators[] = $metadataProviderFactoryLocator;
+    }
+
     /**
      * Obtiene un proveedor de metadatos a partir de una especificación de tabla
      * de atributos dinámicos.
      * 
      * @param TableMetadata $tableMetadata
      * @return IMetadataProvider
-     */
-    public function getProviderForTableMetadata(TableMetadata $tableMetadata) {
-        return $tableMetadata->getMetadataProviderFromFactory($this);
+     */    
+    public function getMetadataProviderFor(TableMetadata $tableMetadata ) 
+    {        
+        return $tableMetadata->getMetadataProviderFromFactory($this);        
     }
-
     
-    /**
-     * Obtiene un proveedor de metadatos a partir de una clave de identificación.
-     * 
-     * @param string $key
-     * @return IMetadataProvider
-     * @throws Exception
-     */
-    public function getProviderForKey($key) {
-        if (isset($this->metadataProviders[$key])) {
-
-            /* @var $metadataProviderFactory IConcreteMetadataProviderFactory */
-            $metadataProviderFactory = $this->metadataProviders[$key];
-            return $metadataProviderFactory->create();
-        } else {
-            throw new Exception("No se encuentra definido un Metadata Provider para la clave " . $key);
-        }
-    }
-
-    
-    /**
-     * Establece una factory de proveedores de metadatos asociado a la clave
-     * especificada.
-     * 
-     * @param string $key
-     * @param IConcreteMetadataProviderFactory $metadataProviderFactory
-     */
-    public function setProvider($key, IConcreteMetadataProviderFactory $metadataProviderFactory) {
-        $this->metadataProviders[$key] = $metadataProviderFactory;
-    }
-
     /**
      * Obtiene un proveedor de metadatos asociado a la especificación de tabla
      * de atributos dinámicos especificada.
@@ -79,8 +56,19 @@ class MetadataProviderFactory implements IMetadataProviderFactory {
      * @param EntityTableMetadata $entityTableMetadata Tabla de atributos dinámicos basada en entidad.
      * @return IMetadataProvider
      */
-    public function getProviderForEntityTable(EntityTableMetadata $entityTableMetadata) {
-        return $this->getProviderForKey($entityTableMetadata->getEntityType());
+    public function getProviderForEntityTable(EntityTableMetadata $tableMetadata) 
+    {
+        /* @var $metadataProviderFactoryLocator IMetadataProviderFactoryLocator */
+        foreach( $this->metadataProviderFactoryLocators as $metadataProviderFactoryLocator )
+        {
+            /* @var $metadataProviderFactory IConcreteMetadataProviderFactory */
+            $metadataProviderFactory = $metadataProviderFactoryLocator->lookupMetadataProviderFactoryForEntityTableMetadata($tableMetadata);
+            if( !is_null($metadataProviderFactory) ){
+                return $metadataProviderFactory->create();    
+            }
+        }
+        
+        throw new Exception("No se encuentra definido un MetadataProvider para el TableMetadata " . $tableMetadata);
     }
 
     /**
@@ -90,8 +78,18 @@ class MetadataProviderFactory implements IMetadataProviderFactory {
      * @param EntityTableMetadata $logicTableMetadata Tabla de atributos dinámicos.
      * @return IMetadataProvider
      */    
-    public function getProviderForLogicTable(LogicTableMetadata $logicTableMetadata) {
-        return $this->getProviderForKey($logicTableMetadata->getName());
+    public function getProviderForLogicTable(LogicTableMetadata $tableMetadata) 
+    {
+        /* @var $metadataProviderFactoryLocator IMetadataProviderFactoryLocator */
+        foreach( $this->metadataProviderFactoryLocators as $metadataProviderFactoryLocator )
+        {
+            /* @var $metadataProviderFactory IConcreteMetadataProviderFactory */
+            $metadataProviderFactory = $metadataProviderFactoryLocator->lookupMetadataProviderFactoryForLogicTableMetadata($tableMetadata);
+            if( !is_null($metadataProviderFactory) ){
+                return $metadataProviderFactory->create();    
+            }
+        }
+        
+        throw new Exception("No se encuentra definido un MetadataProvider para el TableMetadata " . $tableMetadata);
     }
-
 }

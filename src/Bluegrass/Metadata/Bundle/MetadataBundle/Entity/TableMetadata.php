@@ -47,8 +47,8 @@ abstract class TableMetadata
     {
         $attribute->setOwner($this);
         $this->attributes[] = $attribute;
-    }
-            
-    public abstract function getMetadataProviderFromFactory(IMetadataProviderFactory $providerFactory);
+    }            
+    
+    public abstract function getMetadataProviderFromFactory(IMetadataProviderFactory $providerFactory);    
 }
 

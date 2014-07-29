@@ -3,6 +3,8 @@
 namespace Bluegrass\Metadata\Bundle\MetadataBundle\Model\MetadataProvider\Factory;
 
 use Doctrine\ORM\EntityManager;
+use Bluegrass\Metadata\Bundle\MetadataBundle\Model\MetadataProvider\LogicTableMetadataProvider;
+use Bluegrass\Metadata\Bundle\MetadataBundle\Model\MetadataValueProvider\Factory\IMetadataValueFactory;
 
 /**
  * Factory para LogicTableMetadataProvider.
@@ -16,13 +18,19 @@ use Doctrine\ORM\EntityManager;
 class LogicTableMetadataProviderFactory implements IConcreteMetadataProviderFactory {
     
     protected $em;
+    protected $tableName;    
+    protected $metadataValueFactory;
     
-    public function __construct(EntityManager $em) {
+    public function __construct(EntityManager $em, $tableName, IMetadataValueFactory $metadataValueFactory) 
+    {
         $this->em = $em;
+        $this->tableName = $tableName;
+        $this->metadataValueFactory = $metadataValueFactory;
     }
     
-    public function create() {
-        return new LogicTableMetadataProvider($this->em);
+    public function create() 
+    {
+        return new LogicTableMetadataProvider($this->em, $this->tableName, $this->metadataValueFactory);
     }
 
 }

@@ -1,9 +1,10 @@
 <?php
 
-use Bluegrass\Metadata\Bundle\MetadataBundle\Model\MetadataProvider\MetadataProvider;
-use Doctrine\ORM\EntityManager;
-
 namespace Bluegrass\Metadata\Bundle\MetadataBundle\Model\MetadataProvider;
+
+use Bluegrass\Metadata\Bundle\MetadataBundle\Model\MetadataProvider\MetadataProvider;
+use Bluegrass\Metadata\Bundle\MetadataBundle\Model\MetadataValueProvider\Factory\IMetadataValueFactory;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Description of LogicTableMetadataProvider
@@ -14,12 +15,15 @@ class LogicTableMetadataProvider extends MetadataProvider {
 
     protected $logicTableName;
     
-    public function __construct(EntityManager $em, $tableName) {
+    public function __construct(EntityManager $em, $tableName, IMetadataValueFactory $metadataValueFactory) 
+    {
         parent::__construct($em);
         $this->logicTableName = $tableName;
+        $this->setMetadataValueFactory($metadataValueFactory);
     }
     
-    protected function getTableName() {
+    protected function getTableName() 
+    {
         return $this->logicTableName;
     }
 
@@ -27,7 +31,8 @@ class LogicTableMetadataProvider extends MetadataProvider {
      * 
      * {@inherit}
      */
-    protected function getTableMetadata() {
+    protected function getTableMetadata() 
+    {
         $tableMetadata = $this->getEm()->getRepository('\Bluegrass\Metadata\Bundle\MetadataBundle\Entity\LogicTableMetadata')->findOneByName($this->getTableName());
         
         if (is_null($tableMetadata)) {
@@ -36,5 +41,4 @@ class LogicTableMetadataProvider extends MetadataProvider {
 
         return $tableMetadata;
     }
-
 }

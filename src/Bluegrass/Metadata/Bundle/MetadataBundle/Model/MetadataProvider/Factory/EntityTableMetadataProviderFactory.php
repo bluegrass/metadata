@@ -3,6 +3,7 @@
 namespace Bluegrass\Metadata\Bundle\MetadataBundle\Model\MetadataProvider\Factory;
 
 use Bluegrass\Metadata\Bundle\MetadataBundle\Model\MetadataProvider\EntityTableMetadataProvider;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Factory para EntityTableMetadataProvider.
@@ -15,15 +16,19 @@ use Bluegrass\Metadata\Bundle\MetadataBundle\Model\MetadataProvider\EntityTableM
  */
 class EntityTableMetadataProviderFactory implements IConcreteMetadataProviderFactory {
     
-    protected $metadataProvider;
+    protected $em;
+    protected $entityType;
+    protected $metadataValueFactory;
     
-    public function __construct(EntityTableMetadataProvider $metadataProvider) {
-        $this->metadataProvider = $metadataProvider;
+    public function __construct(EntityManager $em, $entityType, $metadataValueFactory) {
+        $this->em = $em;
+        $this->entityType = $entityType;
+        $this->metadataValueFactory = $metadataValueFactory;
     }
     
-    public function create() {
-        /** @todo Este metodo podría no existir más */
-        return $this->metadataProvider;
+    public function create() 
+    {
+        return new EntityTableMetadataProvider($this->em, $this->entityType, $this->metadataValueFactory);
     }
 
 }

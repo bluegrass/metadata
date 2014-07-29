@@ -15,7 +15,8 @@ class LogicTableMetadata extends TableMetadata
     /** @ORM\Column(type="string") */    
     protected $name;
     
-    public function __construct($name) {
+    public function __construct($name) 
+    {
         $this->name = $name;
     }
     
@@ -33,8 +34,14 @@ class LogicTableMetadata extends TableMetadata
      * 
      * {@inheritdoc }
      */
-    public function getMetadataProviderFromFactory(IMetadataProviderFactory $providerFactory) {
+    public function getMetadataProviderFromFactory(IMetadataProviderFactory $providerFactory) 
+    {
         return $providerFactory->getProviderForLogicTable($this);
-    }            
+    }     
+    
+    public function __toString()
+    {
+        return $this->getName();
+    }
 }
 

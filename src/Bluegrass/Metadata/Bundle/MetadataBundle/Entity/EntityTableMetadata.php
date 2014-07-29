@@ -35,8 +35,14 @@ class EntityTableMetadata extends TableMetadata
      * 
      * {@inheritdoc }
      */
-    public function getMetadataProviderFromFactory(IMetadataProviderFactory $providerFactory) {
+    public function getMetadataProviderFromFactory(IMetadataProviderFactory $providerFactory) 
+    {
         return $providerFactory->getProviderForEntityTable($this);
-    }                
+    }     
+    
+    public function __toString()
+    {
+        return $this->getEntityType();
+    }
 }
 
