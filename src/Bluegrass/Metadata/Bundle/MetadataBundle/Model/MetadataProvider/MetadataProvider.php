@@ -21,15 +21,18 @@ abstract class MetadataProvider implements IMetadataProvider {
     protected $metadataValueFactory = null;
     protected $metadata = null;
 
-    public function __construct(EntityManager $em) {
+    public function __construct(EntityManager $em) 
+    {
         $this->setEm($em);
     }
 
-    protected function getEm() {
+    protected function getEm() 
+    {
         return $this->em;
     }
 
-    protected function setEm($em) {
+    protected function setEm($em) 
+    {
         $this->em = $em;
     }
 
@@ -37,11 +40,13 @@ abstract class MetadataProvider implements IMetadataProvider {
      * 
      * @return IMetadataValueFactory
      */
-    public function getMetadataValueFactory() {
+    public function getMetadataValueFactory() 
+    {
         return $this->metadataValueFactory;
     }
 
-    protected function setMetadataValueFactory($metadataValueFactory) {
+    protected function setMetadataValueFactory($metadataValueFactory) 
+    {
         $this->metadataValueFactory = $metadataValueFactory;
     }
 
@@ -51,7 +56,8 @@ abstract class MetadataProvider implements IMetadataProvider {
      */
     protected abstract function getTableMetadata();
 
-    protected function buildMetadata() {
+    protected function buildMetadata() 
+    {
         $tableMetadata = $this->getTableMetadata();
 
         foreach ($tableMetadata->getAttributes() as $attributeMetadata) {
@@ -67,11 +73,13 @@ abstract class MetadataProvider implements IMetadataProvider {
         }
     }
 
-    protected function buildStringMetadataFromAttribute(AttributeMetadata $attributeMetadata) {
+    protected function buildStringMetadataFromAttribute(AttributeMetadata $attributeMetadata) 
+    {
         return new Metadata(new RawMetadataValueProvider($this->getMetadataValueFactory()), $attributeMetadata->getName());
     }
 
-    protected function buildObjectMetadataFromAttribute(AttributeMetadata $attributeMetadata) {
+    protected function buildObjectMetadataFromAttribute(AttributeMetadata $attributeMetadata) 
+    {
         $args = $attributeMetadata->getArgs();
         return new Metadata(new ObjectMetadataValueProvider($this->getMetadataValueFactory(), $this->getEm(), $args['entityType']), $attributeMetadata->getName());
     }
@@ -82,7 +90,8 @@ abstract class MetadataProvider implements IMetadataProvider {
      * @return Metadata
      * @throws Exception
      */
-    public function getMetadata($metadataName) {
+    public function getMetadata($metadataName) 
+    {
         if (is_null($this->metadata)) {
             $this->buildMetadata();
         }
@@ -94,4 +103,17 @@ abstract class MetadataProvider implements IMetadataProvider {
         }
     }
 
+    /**
+     * 
+     * @param string $metadataName
+     * @return boolean
+     */
+    public function hasMetadata($metadataName) 
+    {
+        if (is_null($this->metadata)) {
+            $this->buildMetadata();
+        }
+
+        return isset($this->metadata[$metadataName]);
+    }   
 }

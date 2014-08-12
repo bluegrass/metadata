@@ -2,8 +2,6 @@
 
 namespace Bluegrass\Metadata\Bundle\MetadataBundle\Model\MetadataValueProvider;
 
-use Bluegrass\Metadata\Bundle\MetadataBundle\Model\Metadata;
-use Bluegrass\Metadata\Bundle\MetadataBundle\Model\IMetadataEntity;
 use Bluegrass\Metadata\Bundle\MetadataBundle\Model\IMetadataValue;
 use Bluegrass\Metadata\Bundle\MetadataBundle\Model\MetadataValueProvider\Factory\IMetadataValueFactory;
 
@@ -59,16 +57,9 @@ class ObjectMetadataValueProvider extends MetadataValueProvider
         return $entity;
     }    
     
-    /**
-     * 
-     * @param \Bluegrass\Metadata\Bundle\MetadataBundle\Model\IMetadataEntity $entity
-     * @param \Bluegrass\Metadata\Bundle\MetadataBundle\Model\Metadata $metadata
-     * @param type $value
-     * @return \Bluegrass\Metadata\Bundle\MetadataBundle\Model\IMetadataValue 
-     */
-    public function createValue( IMetadataEntity $entity, Metadata $metadata, $value )
+    public function normalizeValue( $value )
     {
-        return $this->getMetadataValueFactory()->createMetadataValue( $entity, $metadata->getName(), $value->getId() );
+        return $value->getId();
     }
 }
 

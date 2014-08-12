@@ -22,4 +22,11 @@ interface IMetadataValueProvider
      * @param \Bluegrass\Metadata\Bundle\MetadataBundle\Model\IMetadataValue $metadataValue
      */
     public function getValue( IMetadataValue $metadataValue );
+    
+    /**
+     * 
+     * @param mixed $value
+     * @return mixed
+     */
+    public function normalizeValue( $value );
 }

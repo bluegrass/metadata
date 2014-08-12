@@ -9,4 +9,6 @@ namespace Bluegrass\Metadata\Bundle\MetadataBundle\Model\MetadataProvider;
 interface IMetadataProvider
 {
     public function getMetadata( $metadataName );
+    
+    public function hasMetadata( $metadataName );
 }

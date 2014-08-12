@@ -64,9 +64,13 @@ class Metadata
         return $this->getProvider()->createValue($entity, $this, $value);
     }
     
+    public function normalizeValue( $value )
+    {
+        return $this->getProvider()->normalizeValue( $value );
+    }
+    
     public function __toString()
     {
         return $this->getName();
     }
 }
-
